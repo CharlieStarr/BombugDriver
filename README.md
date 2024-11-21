@@ -41,7 +41,7 @@ You must then input the serial port the recieving Arduino is using, and after th
 
 ## Configuring (VERY optional)
 ### Modifying display variables
-In the ``radar.py`` file you can find various variables written in all-caps. Most of these can be modify to suit whatever needs you have, either with the Bombug device or in general any visual preferences you might have:
+In the ``radar.py`` file you can find various variables written in all-caps. Most of these can be modify to suit whatever needs you have, either with the Bombug device or in general any visual preferences you might have:[^1]
 ```python
 HEIGHT = 800 # Dimentions of the display window
 WIDTH = 1200
@@ -53,14 +53,14 @@ MAXSENSOR = 320     # Defines max-distance that the sensor can meassure
 SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
 SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
 ```
-You will most likely want to change the defaults for ``HEIGHT``, ``WIDTH``, and ``SIZING`` since they define graphics carachteristics. You can also change ``TRUESIZE``, ``MAXSENSOR``, and ``SENSORDISTANCE`` but these are calibrated specifically for the Bombug device. If yours does not match the afforementioned values then you should change them. Personally I would not recommend changing ``FPS`` because it really does not do much to increase fluidity and I donot know your computer's specifications.
+[^1]:You _can_ change ``TRUESIZE``, ``MAXSENSOR``, and ``SENSORDISTANCE`` but these are calibrated specifically for the Bombug device. If yours does not match the afforementioned values then you should change them. Personally I would not recommend changing ``FPS`` because it really does not do much to increase fluidity and I do not know your computer's specifications.
 
 ### Adding custom displayable shapes
 You can find the shapes that the program can read in ``object.py``. To add another shape you must create a list of 3d points that define the coordenates of the shape relative to a center point:
 ```python
 exampleSquare = [(1, 1, 0), (-1, 1, 0), (-1, -1, 0), (1, -1, 0)]
 ```
-You can even add more shapes to make a full 3d object[^1]: 
+You can even add more shapes to make a full 3d object:[^2] 
 ```python
 # Example Cube
 exampleSquare1 = [(1, 1, 0), (-1, 1, 0), (-1, -1, 0), (1, -1, 0)]
@@ -69,15 +69,15 @@ exampleSquare3 = [(-1, 1, 1), (1, 1, 1), (1, 1, 0), (-1, 1, 0)]
 exampleSquare4 = [(-1, 1, 1), (-1, 1, 0), (-1, -1, 0), (-1, -1, 1)]
 exampleSquare5 = [(-1, -1, 1), (1, -1, 1), (1, -1, 0), (-1, -1, 0)]
 ```
-[^1]:As of writing this ``Nodes`` and ``Faces`` are handeled by their own class, while 3d objects are just an array of ``Faces``. While this allows for changing the properties of each face individualy I'm still debating if changing it to make it easier to load 3d objects.
+[^2]:As of writing this ``Nodes`` and ``Faces`` are handeled by their own class, while 3d objects are just an array of ``Faces``. While this allows for changing the properties of each face individualy I'm still debating if changing it to make it easier to load 3d objects.
 
-To load custom shapes onto the Bombug software you will have to modify the loading section in ``radar.py`` and add your shapes and their respective color[^2]:
+To load custom shapes onto the Bombug software you will have to modify the loading section in ``radar.py`` and add your shapes and their respective color:[^3]
 ```python
 # Loads faces and colors to create the to-be-displayed object (check objects.py for more info)
 faceList = [ob.exampleSquare3, ob.exampleSquare2, ob.exampleSquare1]
 colorList = [(0, 255, 0), (255, 0, 255), (255, 0, 0)]
 ```
-[^2]: The shapes described in this example are the ones loaded by default by the program, although under a different name.
+[^3]: The shapes described in this example are the ones loaded by default by the program, although under a different name.
 
 Note that the last shape writen is the one that will appear on top. This is because the program loads the first ones first and the next on top of them.
 
