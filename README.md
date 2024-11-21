@@ -27,7 +27,7 @@ and
 ```bash
 pip install pyserial
 ```
-## Usage and Configuration
+## Usage
 Double click on the batch file to start running the program. You will se 2 windows, one is the command prompt and the other is the graphics window. By heading over to the command prompt you will se something like this:
 ```
 Running Bombug python code and dependencies.
