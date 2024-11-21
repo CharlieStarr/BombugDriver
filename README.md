@@ -39,8 +39,24 @@ Select port: COM_
 ```
 You must then input the serial port the recieving Arduino is using, and after that you will be seing the images captured by the Bombug device on the second window.
 
-### Configuring (VERY optional)
-As of right now the only configurable aspect is the `objects.py` file. In it you will find a list of 2d shapes that the rest of the software can read. To add another shape you must create a list of 3d points that define the coordenates of the shape relative to a center point:
+## Configuring (VERY optional)
+### Modifying display variables
+In the ``radar.py`` file you can find various variables written in all-caps. Most of these can be modify to suit whatever needs you have, either with the Bombug device or in general any visual preferences you might have:
+```python
+HEIGHT = 800 # Dimentions of the display window
+WIDTH = 1200
+FPS = 60
+```
+```python
+TRUESIZE = 20       # Defines size of to-be-displayed object (in cm)
+MAXSENSOR = 320     # Defines max-distance that the sensor can meassure
+SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
+SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
+```
+You will most likely want to change the defaults for ``HEIGHT``, ``WIDTH``, and ``SIZING`` since they define graphics carachteristics. You can also change ``TRUESIZE``, ``MAXSENSOR``, and ``SENSORDISTANCE`` but these are calibrated specifically for the Bombug device. If yours does not match the afforementioned values then you should change them. Personally I would not recommend changing ``FPS`` because it really does not do much to increase fluidity and I donot know your computer's specifications.
+
+### Adding custom displayable shapes
+You can find the shapes that the program can read in ``object.py``. To add another shape you must create a list of 3d points that define the coordenates of the shape relative to a center point:
 ```python
 exampleSquare = [(1, 1, 0), (-1, 1, 0), (-1, -1, 0), (1, -1, 0)]
 ```
