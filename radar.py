@@ -15,12 +15,13 @@ import sys           # Allows execution of system commands
 import cengine as ce # Custom graphics library
 
 import reciever as re           # Custom serial communication library
-from reciever import ports          
-from reciever import serialInst
+from reciever import ports, serialInst
+
+import objects as ob
 
 # Pygame Window Setup
 pg.init()    # Initializes pygame
-HEIGHT = 800 # Constants required for graphics
+HEIGHT = 800 # Dimentions of the display window
 WIDTH = 1200
 FPS = 60
 
@@ -35,50 +36,32 @@ SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
 SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
 COLOR = (255, 0, 0) # Color object in RGB (can be customized)
 
-# Function to draw custom objects on screen
-def draw(self, center, camera, display):
-    """
-    Takes as parameters a custom Displayable class 
-    (check cengine.py for more info), the center of
-    the display, the point of perspective (camera),
-    and the screen where the Displayable is
-    projected (display). TLDR projects data to screen.
-    """
-    pointCheck = []
-    points = []
-    flag = False    # Requiered for checking if objects are behind the camera as to not display them
-    # TO DO: Fix perspective issues when object is behind camera
+# Draw function
+def draw(self, center, camera, screen):
+    displayable = ce.project(self, center, camera, screen)
+    if displayable != None:
+        points = []
+        for point in displayable[0]:
+            x = (WIDTH/2) + (point[0]*SIZING)
+            y = (HEIGHT/2) - (point[1]*SIZING)
+            points.append([x,y])
+        pg.draw.polygon(displaySurface, displayable[1], points)
 
-    # Moves object to user issued position and runs projection function
-    for node in self.nodes: 
-        node.move(center)
-        coords = ce.perspective(ce.Displayable(node, camera, display))
-        pointCheck.append([(WIDTH/2) + (coords[0]*SIZING), (HEIGHT/2) - (coords[1]*SIZING), coords[2]])
+# Loads faces and colors to create the to-be-displayed object (check objects.py for more info)
+faceList = [ob.face3Nodes, ob.face2Nodes, ob.face1Nodes]
+colorList = [(0, 255, 0), (255, 0, 255), (255, 0, 0)]
+Object = []
 
-    # Checks if object is behind screen. If it isn't, draws object on screen
-    for point in pointCheck:
-        flag = flag or point[2] > 0
-        points.append([point[0], point[1]])
-    #print(points) Debugging only
-    #print(flag)
-    if flag:
-        pg.draw.polygon(displaySurface, ce.colorFromDepth(self.color, center[2]), points)
+for i in range(len(faceList)):
+    face = []
+    for node in faceList[i]:
+        point = []
+        for coord in node:
+            point.append(coord*TRUESIZE/2)
+        face.append(point)
+    Object.append(ce.Face(colorList[i], faceList[i])) # Creates the object
 
-# Point arrays that define coordinates of to-be-displayed objects. These define a cube
-side = TRUESIZE/2 
-face1Nodes = [(side, side, 0), (side*-1, side, 0), (side*-1, side*-1, 0), (side, side*-1, 0)]
-face2Nodes = [(side, side, side), (side, side, 0), (side, side*-1, 0), (side, side*-1, side)]
-face3Nodes = [(side*-1, side, side), (side, side, side), (side, side, 0), (side*-1, side, 0)]
-face4Nodes = [(side*-1, side, side), (side*-1, side, 0), (side*-1, side*-1, 0), (side*-1, side*-1, side)]
-face5Nodes = [(side*-1, side*-1, side), (side, side*-1, side), (side, side*-1, 0), (side*-1, side*-1, 0)]
-
-# Triangle coordinates for literally no reason
-triangleNodes = [(side, side, 0), (side, side*-1, 0), (side*-1, side*-1, 0)] 
-
-# Creates classes that define the faces of to-be-displayed objects
-Square1 = ce.Display((255, 0, 0), face1Nodes)
-Square2 = ce.Display((255, 0, 255), face2Nodes)
-Square3 = ce.Display((0, 255, 0), face3Nodes)
+# Initializes variables required for projection of objects to screen
 camerax, cameray, cameraz, cameraalpha, camerabeta, cameragamma = 0, 0, 0, 0, 0, 0
 cameraCenter = []
 Camera = ce.Node((0, 0, 0))
@@ -87,6 +70,9 @@ Screen = ce.Node((0, 0, TRUESIZE/2))
 d1 = 21 # Distances of meassured object from both sensors
 d2 = 21
 flag = 0
+
+# Starts comunication with front-end
+re.serialSetup(serialInst, ports)
 
 # Game Loop
 while True:
@@ -106,7 +92,7 @@ while True:
             flag = 1
         else:
             flag = 0
-    #print("Distances: ", d1, ", ", d2) Debugging only
+    # print("Distances: ", d1, ", ", d2) Debugging only
 
     # Variables for object displaying
     displaySurface.fill((0, 0, 0))   # Resets screen
@@ -116,9 +102,8 @@ while True:
     Screen.move((0, 0, 0, 0, 0, 0))
 
     # Draws object
-    draw(Square2, centerPosition, Camera, Screen)
-    draw(Square3, centerPosition, Camera, Screen)
-    draw(Square1, centerPosition, Camera, Screen)
+    for face in Object:
+        draw(face, centerPosition, Camera, Screen)
     pg.display.flip() # Updates screen
 
     # User input for controling camera
@@ -131,9 +116,6 @@ while True:
 
     for event in pg.event.get():
         if event.type == pg.QUIT: # Quit function
-            file.close()
             pg.quit()
             sys.exit()
     framesSec.tick(FPS)
-        
-
