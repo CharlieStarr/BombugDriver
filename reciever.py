@@ -65,4 +65,4 @@ def recieveMessage(flag, d1, d2):
 
         currentTime = int((time.time() - startTime) * 1000)
         print(currentTime, distances) # Writes distances to screen
-        return currentTime, distances
+        return distances
