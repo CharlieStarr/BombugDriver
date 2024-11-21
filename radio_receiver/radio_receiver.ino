@@ -1,11 +1,11 @@
 /* 
-Radio reciver code for the Bombug.
+Radio receiver code for the Bombug.
 Made (mostly) by Carlos ★. 
 
 Using radiohead library for protoccoled
 serial communitation and messaging.
 
-Used for recieving data from the ultrasound
+Used for receiving data from the ultrasound
 sensors board.
 */
 
