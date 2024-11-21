@@ -88,30 +88,6 @@ d1 = 21 # Distances of meassured object from both sensors
 d2 = 21
 flag = 0
 
-mode = None
-through = False
-print("\n")
-print("########################################")
-print("# Welcome to the Bombug setup manager. #")
-print("########################################")
-print("\n")
-while not through:
-    mode = input("Select io mode (write, read): ")
-    if str(mode) != "write" and str(mode) != "read":
-        print("That is not an available mode. Try again.")
-    else:
-        print("Initializing ", str(mode), " mode.")
-        through = True
-if mode == "write":
-    print("\n")
-    re.serialSetup(serialInst, ports)
-    file = open("log.txt", "w")
-    file.write("Time - Distances\n")
-if mode == "read":
-    file = open("log.txt", "r")
-    print(file.read())
-    file.close()
-
 # Game Loop
 while True:
     # Moves camera according to user input
@@ -121,10 +97,8 @@ while True:
     # print("CameraCenter: ", cameraCenter) Debugging only
 
     # Recieves distances from serial (check reciever.py for more info)
-    rawMessage = re.recieveMessage(flag, d1, d2)
-    if rawMessage != None:
-        file.write(str(rawMessage[0]) + " - " + str(rawMessage[1]) + "\n") # Writes data to log
-        message = rawMessage[1]
+    message = re.recieveMessage(flag, d1, d2)
+    if message != None:
         d1 = message[0]
         d2 = message[1]
         # Changes flag to declare which sensor the data is comming from
