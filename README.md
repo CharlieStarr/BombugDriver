@@ -17,8 +17,9 @@ Before installing any code make sure you have the following installed on your co
 
 ### 1. Setting up the Bombug folder
 Clone the github repository to any folder you like. After that you have to upload the `radio_emitter` and `radio_reciever` to your Bombug device and Arduino UNO respectively and make sure they are running. Take note of what port your Arduino is using as it will be important later.
-
-### 2. Installing relevant python modules
+### 2. Adding the RadioHead library
+You will have to install the [RadioHead](https://www.airspayce.com/mikem/arduino/RadioHead/) library and manually add it to your libraries in the Arduino IDE to make sure the code works.
+### 3. Installing relevant python modules
 You will have to install the `pygame` and `pyserial` modules if you do not have them already:
 ```bash
 pip install pygame
