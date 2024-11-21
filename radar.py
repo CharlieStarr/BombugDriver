@@ -34,7 +34,6 @@ TRUESIZE = 20       # Defines size of to-be-displayed object (in cm)
 MAXSENSOR = 320     # Defines max-distance that the sensor can meassure
 SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
 SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
-COLOR = (255, 0, 0) # Color object in RGB (can be customized)
 
 # Draw function
 def draw(self, center, camera, screen):
