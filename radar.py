@@ -14,26 +14,27 @@ import pygame as pg  # Allows on-screen drawing
 import sys           # Allows execution of system commands
 import cengine as ce # Custom graphics library
 
-import reciever as re           # Custom serial communication library
+import reciever as re # Custom serial communication library
 from reciever import ports, serialInst
 
-import objects as ob
+import objects as ob  # Object data
 
-# Pygame Window Setup
+# Constants
 pg.init()    # Initializes pygame
 HEIGHT = 800 # Dimentions of the display window
 WIDTH = 1200
 FPS = 60
 
+TRUESIZE = 20       # Defines size of to-be-displayed object (in cm)
+MAXSENSOR = 320     # Defines max-distance that the sensor can meassure
+SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
+SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
+COLOR = (255, 0, 0) # Color object in RGB (can be customized)
+
+# Pygame Setup
 framesSec = pg.time.Clock()
 displaySurface = pg.display.set_mode((WIDTH, HEIGHT)) # Actual function that creates window for displaying
 pg.display.set_caption("Ultrasound Sensor")
-
-# Sensor Graphics
-TRUESIZE = 20       # Defines size of to-be-displayed object (in cm)
-MAXSENSOR = 320     # Defines max-distance that the sensor can meassure (in cm)
-SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
-SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
 
 # Draw function
 def draw(self, center, camera, screen):
@@ -75,6 +76,7 @@ re.serialSetup(serialInst, ports)
 
 # Game Loop
 while True:
+
     # Moves camera according to user input
     cameraCenter = []
     for value in (camerax, cameray, cameraz, cameraalpha, camerabeta, cameragamma):
@@ -105,7 +107,7 @@ while True:
         draw(face, centerPosition, Camera, Screen)
     pg.display.flip() # Updates screen
 
-    # User input for controling camera
+    # User input
     keys = pg.key.get_pressed()
     camerax += (keys[pg.K_d] - keys[pg.K_a])
     cameray += (keys[pg.K_SPACE] - keys[pg.K_LSHIFT])
