@@ -50,7 +50,7 @@ FPS = 60
 ```
 ```python
 TRUESIZE = 20       # Defines size of to-be-displayed object (in cm)
-MAXSENSOR = 320     # Defines max-distance that the sensor can meassure
+MAXSENSOR = 320     # Defines max-distance that the sensor can meassure (in cm)
 SIZING = 5          # Defines a constant to convert acual cm meassures to pixels
 SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
 ```
