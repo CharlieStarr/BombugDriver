@@ -1,6 +1,7 @@
 # BombugDriver
-The Bombug Driver is a bundle of C++ and Python code for controlling a Bombug device.
 **This is a school project** 
+
+The Bombug Driver is a bundle of C++ and Python code for controlling a Bombug device.
 
 ## Technologies
 Project made with:
