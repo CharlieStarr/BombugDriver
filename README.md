@@ -84,7 +84,7 @@ Note that the last shape writen is the one that will appear on top. This is beca
 
 
 ## Status
-Bombug v0.2.0 developed and maintained by Carlos ★
+Bombug v0.0.1 developed and maintained by Carlos ★
 ### Features:
 - Can **see**
 - Can see multiple different customizable shapes
