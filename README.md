@@ -87,7 +87,9 @@ Note that the last shape writen is the one that will appear on top. This is beca
 
 ## Status
 Bombug v0.1.0-alpha developed and maintained by Carlos ★
+
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ### Features:
 - Can **see**
 - Can see multiple different customizable shapes
