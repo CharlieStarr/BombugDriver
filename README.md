@@ -44,7 +44,7 @@ You must then input the serial port the recieving Arduino is using, and after th
 
 ## Configuring (VERY optional)
 ### Modifying display variables
-In the ``radar.py`` file you can find various variables written in all-caps. Most of these can be modify to suit whatever needs you have, either with the Bombug device or in general any visual preferences you might have:[^1]
+In the ``projector.py`` file you can find various variables written in all-caps. Most of these can be modify to suit whatever needs you have, either with the Bombug device or in general any visual preferences you might have:[^1]
 ```python
 HEIGHT = 800 # Dimentions of the display window
 WIDTH = 1200
@@ -59,43 +59,44 @@ SENSORDISTANCE = 5  # Defines distance betwen ultrasonic sensors (in cm)
 [^1]:You _can_ change ``TRUESIZE``, ``MAXSENSOR``, and ``SENSORDISTANCE`` but these are calibrated specifically for the Bombug device. If yours does not match the afforementioned values then you should change them. Personally I would not recommend changing ``FPS`` because it really does not do much to increase fluidity and I do not know your computer's specifications.
 
 ### Adding custom displayable shapes
-You can find the shapes that the program can read in ``object.py``. To add another shape you must create a list of 3d points that define the coordenates of the shape relative to a center point:
+You can find the shapes that the program can read in ``object.py``. To add another shape you must create a 3d array that contains the information of your shape:
 ```python
-exampleSquare = [(1, 1, 0), (-1, 1, 0), (-1, -1, 0), (1, -1, 0)]
+cube = [
+    [(1, 1, 0), (-1, 1, 0), (-1, -1, 0), (1, -1, 0)],
+    [(1, 1, 1), (1, 1, 0), (1, -1, 0), (1, -1, 1)],
+    [(-1, 1, 1), (1, 1, 1), (1, 1, 0), (-1, 1, 0)]
+]
 ```
-You can even add more shapes to make a full 3d object:[^2] 
+In this case i have arranged them so each line is a face and each touple inside is a point defining the face. You can then add the colours for each face in another array:
 ```python
-# Example Cube
-exampleSquare1 = [(1, 1, 0), (-1, 1, 0), (-1, -1, 0), (1, -1, 0)]
-exampleSquare2 = [(1, 1, 1), (1, 1, 0), (1, -1, 0), (1, -1, 1)]
-exampleSquare3 = [(-1, 1, 1), (1, 1, 1), (1, 1, 0), (-1, 1, 0)]
-exampleSquare4 = [(-1, 1, 1), (-1, 1, 0), (-1, -1, 0), (-1, -1, 1)]
-exampleSquare5 = [(-1, -1, 1), (1, -1, 1), (1, -1, 0), (-1, -1, 0)]
+cubeColors = [
+    [255, 0, 0],
+    [255, 255, 0],
+    [0, 255, 255]
+]
 ```
-[^2]:As of writing this ``Nodes`` and ``Faces`` are handeled by their own class, while 3d objects are just an array of ``Faces``. While this allows for changing the properties of each face individualy I'm still debating if changing it to make it easier to load 3d objects.
 
-To load custom shapes onto the Bombug software you will have to modify the loading section in ``radar.py`` and add your shapes and their respective color:[^3]
+To load custom shapes onto the Bombug software you just have to add your arrays to the following line in `projector.py`:
 ```python
 # Loads faces and colors to create the to-be-displayed object (check objects.py for more info)
-faceList = [ob.exampleSquare3, ob.exampleSquare2, ob.exampleSquare1]
-colorList = [(0, 255, 0), (255, 0, 255), (255, 0, 0)]
+Display = ce.Polyhedra(ob.cube, ob.cubeColors)
 ```
-[^3]: The shapes described in this example are the ones loaded by default by the program, although under a different name.
 
 Note that the last shape writen is the one that will appear on top. This is because the program loads the first ones first and the next on top of them.
 
 
 ## Status
-Bombug v0.1.0-alpha developed and maintained by Carlos ★
+Bombug v0.2.0-alpha developed and maintained by Carlos ★
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Features:
 - Can **see**
 - Can see multiple different customizable shapes
+- Logs data to a text file for future review
 ### To Do:
-- Add log functionality for storing and sharing visual data
 - Add the toy car and program it? (I'm not the one working on that anyway)
+- Add a way to read logged data
 - Add sentience
 
 
