@@ -78,7 +78,6 @@ cubeColors = [
 
 To load custom shapes onto the Bombug software you just have to add your arrays to the following line in `projector.py`:
 ```python
-# Loads faces and colors to create the to-be-displayed object (check objects.py for more info)
 Display = ce.Polyhedra(ob.cube, ob.cubeColors)
 ```
 
