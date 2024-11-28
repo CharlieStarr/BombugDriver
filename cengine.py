@@ -15,7 +15,7 @@ either pre-projection (3d) or
 after-projection (2d)
 """
 
-# Node class that represents one point of the displayed object
+# Represents one point of the displayed object
 class Node:
     def __init__(self, shift):
         self.xshift = shift[0] # These are just coordinates
@@ -24,23 +24,39 @@ class Node:
         self.x = 0
         self.y = 0
         self.z = 0
-        self.alpha = 0         # More coordinates, but these are angle coordinates
-        self.beta = 0
-        self.gamma = 0
-        self.pos = [0, 0, 0]
 
-    # Function to move a point to specified coordinates
+    # Moves a point to specified coordinates
     def move(self, center): 
-        self.alpha = center[3]
-        self.beta = center[4]
-        self.gamma = center[5]
         self.x = center[0] + self.xshift
         self.y = center[1] + self.yshift
         self.z = center[2] + self.zshift
-        self.pos = [self.x, self.y, self.z]
 
-# TransformedNode class that represents a node passed through a Camer Transform
-class TransformedNode():
+class Camera:
+    def __init__(self, pos=[0, 0, 0, 0, 0, 0]):
+        self.x = pos[0]
+        self.y = pos[1]
+        self.z = pos[2]
+        self.alpha = pos[3]
+        self.beta = pos[4]
+        self.gamma = pos[5]
+
+# Collets projected points for displaying them through pygame
+class Face:
+    def __init__(self, nodeList):
+        self.nodes = []
+        for node in nodeList:
+            self.nodes.append(Node(node))
+
+# Collects faces
+class Polyhedra:
+    def __init__(self, faceList, colorList):
+        self.faces = []
+        self.colors = colorList
+        for face in faceList:
+            self.faces.append(Face(face))
+
+# Represents a node passed through a Camer Transform
+class TransformedNode:
     def __init__(self, point, camera, display):
         X = point.x - camera.x # More coordinates
         Y = point.y - camera.y
@@ -61,21 +77,13 @@ class TransformedNode():
         self.size = display.z
         # print("Positions: ", self.x, self.y, self.z) Debugging only
 
-# Face class that collets projected points for displaying them through pygame
-class Face():
-    def __init__(self, color, nodeList):
-        self.color = color
-        self.nodes = []
-        for node in nodeList:
-            self.nodes.append(Node(node))
-
 """
 FUNCTIONS:
 These functions are just the bulk of the
 math that radar.py needs to project images
 """
 
-# Function to calculate color of object according to depth
+# Calculates color of object according to depth
 def colorFromDepth(baseColor, zCoord):
     newColor = []
     for color in baseColor:
@@ -90,7 +98,7 @@ def colorFromDepth(baseColor, zCoord):
             newColor.append(0)
     return newColor
 
-# Function to calculate position according to distances from ultrasound sensors
+# Calculates position according to distances from ultrasound sensors
 def zCoordinate(firstd1, firstd2, a):
     d1 = firstd1
     d2 = firstd2
@@ -99,7 +107,7 @@ def zCoordinate(firstd1, firstd2, a):
     return [x, 0, z, 0, 0, 0]
     # TODO: Add a third sensor to detect y values and extra objects
 
-# Function to calculate the perspective projection
+# Calculates the perspective projection
 def perspective(self):
     if self.z != 0:
         x = (self.size*self.x/self.z)
@@ -108,16 +116,16 @@ def perspective(self):
         x, y = 0, 0
     return (x, y)
 
-# Function to project objects and prepare them for displaying
-def project(self, center, camera, screen):
-    points = [] # List of projected points
+# Projects objects and prepare them for displaying
+def project(self, center, camera, screen, color):
+    points = []
 
     # Moves object to user issued position and runs projection function
     for node in self.nodes: 
         node.move(center)
         nodeDisplay = TransformedNode(node, camera, screen)
 
-        # This line only adds points that are in front of the camera 
+        # Only adds points that are in front of the camera 
         if nodeDisplay.z > 0: 
             points.append(perspective(nodeDisplay))  
 
@@ -125,5 +133,5 @@ def project(self, center, camera, screen):
     if len(points) < 3:
         return None
     else:
-        color = colorFromDepth(self.color, center[2])
-        return (points, color)     
+        trueColor = colorFromDepth(color, center[2])
+        return (points, trueColor)     
